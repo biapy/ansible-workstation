@@ -2,8 +2,10 @@
 collections:
   - name: donhector.workstation
     version: 1.1.0
+  - name: community.general
 roles:
   - src: jaredhocutt.gnome_extensions
     version: master
   - src: geerlingguy.docker
     version: 6.1.0
+  - src: geerlingguy.composer

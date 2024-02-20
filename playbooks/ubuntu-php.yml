@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  roles:
+    - role: geerlingguy.composer
+      become: true
+      tags: php
+      var:
+        composer_keep_updated: true
+        composer_home_path: "/var/lib/composer"
+        composer_home_owner: root
+        composer_home_group: root

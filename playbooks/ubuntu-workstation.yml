@@ -1,3 +1,4 @@
 ---
 - import_playbook: ubuntu-media.yml
 - import_playbook: ubuntu-cloud.yml
+- import_playbook: ubuntu-php.yml
