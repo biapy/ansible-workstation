@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  roles:
+    - role: spotify
+      become: true
+      tags: spotify

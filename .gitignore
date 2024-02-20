@@ -1,0 +1,9 @@
+# Ansible galaxy content
+/galaxy-roles
+/collections/ansible_collections
+
+# Local cache
+/facts
+
+### VisualStudioCode ###
+.vscode/*
