@@ -1,6 +1,8 @@
 ---
-- hosts: localhost
+- name: Install cloud storage clients
+  hosts: workstations
   roles:
     - role: seafile-gui
       become: true
       tags: storage
+...
