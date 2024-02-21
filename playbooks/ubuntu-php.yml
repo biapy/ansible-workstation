@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   roles:
-    - role: geerlingguy.composer
+    - role: shaneholloman.composer
       become: true
       tags: php
       var:
