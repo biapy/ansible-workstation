@@ -6,4 +6,7 @@ ansible-galaxy role install -r "requirements.yml"
 ansible-galaxy collection install -r "requirements.yml"
 
 # Play the main playbook
-ansible-playbook playbooks/ubuntu-workstation.yml
+sudo -v &&
+  ansible-playbook \
+    --inventory-file 'inventory.yml' \
+    'playbooks/ubuntu-workstation.yml'
