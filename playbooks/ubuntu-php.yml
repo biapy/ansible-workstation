@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Ihstall PHP development environment
+  hosts: development-stations
   roles:
     - role: shaneholloman.composer
       become: true
@@ -9,3 +10,30 @@
         composer_home_path: "/var/lib/composer"
         composer_home_owner: root
         composer_home_group: root
+  tasks:
+    - name: Install PHP XML support
+      become: true
+      ansible.builtin.apt:
+        name: php-xml
+        state: present
+    - name: Install PHP GD support
+      become: true
+      ansible.builtin.apt:
+        name: php-gd
+        state: present
+    - name: Install PHP MySQL support
+      become: true
+      ansible.builtin.apt:
+        name: php-mysql
+        state: present
+    - name: Install PHP PostgreSQL support
+      become: true
+      ansible.builtin.apt:
+        name: php-pgsql
+        state: present
+    - name: Install PHP Multibyte strings support
+      become: true
+      ansible.builtin.apt:
+        name: php-mbstring
+        state: present
+...
