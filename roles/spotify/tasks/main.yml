@@ -10,4 +10,8 @@
     signed_by: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
 
 - name: Install spotify
-  apt: name=spotify-client update_cache=yes state=latest
+  ansible.builtin.apt:
+    name: spotify-client
+    update_cache: yes
+    state: latest
+...

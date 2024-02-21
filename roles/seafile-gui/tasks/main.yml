@@ -1,10 +1,13 @@
 ---
 - name: Get Ubuntu LTS release
-  shell: ubuntu-distro-info --lts
+  ansible.builtin.command: ubuntu-distro-info --lts
   register: ubuntu_lts_release
   run_once: true
+  changed_when: false
 
-- set_fact: ubuntu_lts_release={{ ubuntu_lts_release.stdout }}
+- name: Set ubuntu_lts_release fact
+  ansible.builtin.set_fact:
+    ubuntu_lts_release: "{{ ubuntu_lts_release.stdout }}"
 
 - name: Add Seafile repository
   ansible.builtin.deb822_repository:
@@ -21,7 +24,8 @@
     deb: http://archive.ubuntu.com/ubuntu/pool/universe/libw/libwebsockets/libwebsockets16_4.0.20-2ubuntu1_amd64.deb
 
 - name: Install Seafile Client
-  apt:
+  ansible.builtin.apt:
     name: seafile-gui
-    update_cache: yes
+    update_cache: true
     state: latest
+...
