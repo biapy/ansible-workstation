@@ -1,6 +1,14 @@
 ---
-- hosts: localhost
+- name: Install Media Players and Editors
+  hosts: workstations
   roles:
     - role: spotify
       become: true
       tags: spotify
+  tasks:
+    - name: Install VLC Media Player
+      become: true
+      ansible.builtin.apt:
+        name: vlc
+        state: present
+...
