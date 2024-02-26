@@ -1,0 +1,72 @@
+---
+# tasks file for microsoft-odbc
+- name: Set repository target distribution
+  ansible.builtin.set_fact:
+    repository_distribution: "{{ ansible_distribution_version }}"
+    repository_suites: "{{ ansible_distribution_release }}"
+
+- name: Check if Microsoft ODBC {{ version }} is available for current distribution
+  ansible.builtin.uri:
+    url: "https://packages.microsoft.com/ubuntu/{{ repository_distribution }}/prod/pool/main/m/msodbcsql{{ version }}/"
+    method: HEAD
+  register: distribution_uri_test
+  failed_when: false
+
+- name: Set repository target LTS distribution
+  ansible.builtin.set_fact:
+    repository_distribution: "{{ ansible_local['ubuntu_distro_info']['lts']['short_release'] }}"
+    repository_suites: "{{ ansible_local['ubuntu_distro_info']['lts']['codename'] }}"
+  when: distribution_uri_test.status != 200
+
+- name: Check if Microsoft ODBC {{ version }} is available for LTS distribution
+  ansible.builtin.uri:
+    url: "https://packages.microsoft.com/ubuntu/{{ repository_distribution }}/prod/pool/main/m/msodbcsql{{ version }}/"
+    method: HEAD
+  register: distribution_uri_test
+  when: distribution_uri_test.status != 200
+
+- name: Add Microsoft ODBC repository
+  ansible.builtin.deb822_repository:
+    name: mssql-release
+    types: deb
+    uris: "https://packages.microsoft.com/ubuntu/{{ repository_distribution }}/prod"
+    suites: "{{ repository_suites }}"
+    components: main
+    architectures:
+      - amd64
+      - armhf
+      - arm64
+    signed_by: https://packages.microsoft.com/keys/microsoft.asc
+  when: distribution_uri_test.status == 200
+
+- name: Accept Microsoft ODBC {{ version }} EULA in debconf
+  ansible.builtin.debconf:
+    name: msodbcsql{{ version }}
+    question: msodbcsql/ACCEPT_EULA
+    value: true
+    vtype: boolean
+
+- name: Install Microsoft ODBC {{ version }}
+  ansible.builtin.apt:
+    name: msodbcsql{{ version }}
+    update_cache: yes
+    state: latest
+
+- name: Accept Microsoft SQL Server Tools {{ version }} EULA in debconf
+  ansible.builtin.debconf:
+    name: mssql-tools{{ version }}
+    question: mssql-tools/accept_eula
+    value: true
+    vtype: boolean
+
+- name: Install Microsoft SQL Server Tools {{ version }}
+  ansible.builtin.apt:
+    name: mssql-tools{{ version }}
+    update_cache: no
+    state: latest
+
+- name: Install unixODBC development headers
+  ansible.builtin.apt:
+    name: unixodbc-dev
+    update_cache: no
+    state: latest
