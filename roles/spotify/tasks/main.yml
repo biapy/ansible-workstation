@@ -9,6 +9,12 @@
     architectures: amd64
     signed_by: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
 
+- name: Divert and rename spotify.list to spotify.list.dpkg-divert
+  community.general.dpkg_divert:
+    path: /etc/apt/sources.list.d/spotify.list
+    divert: /etc/apt/sources.list.d/spotify.list.dpkg-divert
+    rename: true
+
 - name: Install spotify
   ansible.builtin.apt:
     name: spotify-client
