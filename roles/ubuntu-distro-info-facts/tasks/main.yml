@@ -1,0 +1,23 @@
+---
+# tasks file for ubuntu-distro-info-facts
+- name: Install distro-info package
+  ansible.builtin.apt:
+    name: distro-info
+    update_cache: yes
+    state: latest
+
+- name: Create directory for ansible custom facts
+  ansible.builtin.file:
+    state: directory
+    recurse: true
+    path: /etc/ansible/facts.d
+
+- name: Install custom ubuntu-distro-info fact
+  ansible.builtin.copy:
+    src: files/ubuntu_distro_info.fact
+    dest: /etc/ansible/facts.d
+    mode: '0755'
+
+- name: Re-read facts after adding custom ubuntu-distro-info fact
+  ansible.builtin.setup:
+    filter: ansible_local
