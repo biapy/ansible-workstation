@@ -1,7 +1,13 @@
 ---
-- name: Ihstall PHP development environment
+- name: Install PHP development environment
   hosts: development-stations
   roles:
+    - role: microsoft-odbc
+      become: true
+      tags:
+        - odbc
+        - microsoft
+        - mssql
     - role: shaneholloman.composer
       become: true
       tags: php
@@ -36,4 +42,3 @@
       ansible.builtin.apt:
         name: php-mbstring
         state: present
-...
