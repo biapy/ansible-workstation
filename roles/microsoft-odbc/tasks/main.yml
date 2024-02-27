@@ -65,6 +65,19 @@
     update_cache: no
     state: latest
 
+- name: Add Microsoft SQL Server Tools to system-wide $PATH.
+  copy:
+    dest: /etc/profile.d/mssql-tools{{ version }}-path.sh
+    content: |
+      # shellcheck shell=sh
+      # Add Microsoft SQL Server Tools {{ version }} to $PATH.
+
+      # Expand $PATH to include the bin directory.
+      bin_path="/opt/mssql-tools{{ version }}/bin"
+      if [ -n "${PATH##*${bin_path}}" ] && [ -n "${PATH##*${bin_path}:*}" ]; then
+          export PATH="$PATH:${bin_path}"
+      fi
+
 - name: Install unixODBC development headers
   ansible.builtin.apt:
     name: unixodbc-dev
